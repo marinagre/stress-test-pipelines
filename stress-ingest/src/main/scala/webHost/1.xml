@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="notice" version="1.0">
+    <clients>
+        <client host="dev-centos01" weight="1" cpu="10" maxusers="10"></client>
+    </clients>
+
+    <servers>
+        <server host="192.168.161.46" port="8080" type="tcp"/>
+    </servers>
+
+    <load>
+        <arrivalphase phase="1" duration="1" unit="minute">
+            <users maxnumber="10" arrivalrate="1" unit="second"/>
+        </arrivalphase>
+    </load>
+
+    <sessions>
+        <session probability="100" name="ab" type="ts_http">
+            <request>
+                <http url="/test?type=init&amp;uid=-1" method="GET" version="1.1"/>
+            </request>
+            <for from="1" to="50" incr="1" var="i">
+                <request subst="true">
+                    <http url="/test?type=chunk&amp;uid=%%_i%%" method="GET" version="1.1"/>
+                </request>
+            </for>
+            <request>
+                <http url="/test?type=end&amp;uid=-1" method="GET" version="1.1"/>
+            </request>
+        </session>
+    </sessions>
+</tsung>
