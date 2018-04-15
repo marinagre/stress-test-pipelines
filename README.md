@@ -1,1 +1,1 @@
-stress-test-pipeline
+Code base for slide on "Stress testing pipelines"
